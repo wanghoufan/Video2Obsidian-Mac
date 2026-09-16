@@ -1,12 +1,12 @@
-# HANDOFF｜P1 收口＋冻结后接续（2026-09-15 晚）：P0 全清＋P1-1…P1-8 全 PASS；**新增 P1-9 在制品已落盘待走角色链**；Windows 迁移（另仓）暂缓，恢复先读我
+# HANDOFF｜WIN Stage4交付完成（2026-09-16）：P1全清＋WIN Stage0-4全收口；Mac仓main＋Windows仓win-v1-rc双推；开发暂停，恢复先读我
 
 > 旧版字段（governance-state / Evidence / Human Gate / Promotion / Dispatch ID）已废弃，不填。
 > 本文件即恢复入口。「一/二/三」三节为本轮梳理版（2026-09-15 14:10 重写，旧版细节压缩进各链报告与 git 历史）；**Phase1 全过程记录**（用户四条反馈原文、九项 HD 决策、16 条真相、迁移决策、额度事件）与**迁移前项目交接原文**见本文件后段各节，逐字未动。
 
-- Captured at（YYYY-MM-DD HH:MM）：**2026-09-15 22:10（TM 收口 + 冻结）**；本阶段 P1 全部收口并推送 `main`，随后**冻结版本**（tag `v1.0-mac`，落点 `5f06fdb`）；下一步＝**Windows 11 迁移**（另建独立仓库，方案已由 planner 产出：`docs/pm/WINDOWS-MIGRATION-PLAN.md`，**只出计划不施工**）
+- Captured at（YYYY-MM-DD HH:MM）：**2026-09-16（TM 暂停收口）**；P1全链＋WIN Stage0-4全收口：Mac仓 `main` 在 `5a19258`（含P1-9、Stage0-4、supervisor复检、neat两轮加注），`windows/` 整目录已推 **`wanghoufan/Video2Obsidian-Windows`**（main首commit＋tag `win-v1-rc`）；下一步＝**Windows 11真机15项**（`windows/docs/WINDOWS-HANDOFF.md` §二，零推断）或用户新需求。
 - **接续（编排者恢复工作，2026-09-15 晚）**：冻结后发现工作树留有**未提交的 P1-9 在制品**（4 文件），已按「续做半成品默认保留」逐块核对后**先 commit＋push 落盘**，再补走角色链。见 §一.4。Windows 迁移顺延到 P1-9 收口之后。
 - **接续 2（编排者恢复工作，2026-09-16）**：实测 git 对账发现 HANDOFF 落后实际进度——WIN Stage 0（`ebabf91`）与 **Stage 1+2（`6e19fb5`，四角色链 PASS 已推 main）** 均已收口；工作树留 **Stage 3 在制品**（asr_backend 适配层＋stage1 改接＋platform_win.run_ffmpeg），已按「续做半成品默认保留」续链收口，见 §一.7。
-- **接续 3（2026-09-16，用户叫停暂停）**：**Stage 3 已收口推 main（`d8f89d7`）**；**Stage 4 链已走完 builder→reviewer（含返工复核）→qa→supervisor复检PASS（2026-09-16收口，复检节`docs/qa/WIN-STAGE4-QA-2026-09-16.md:八`）**。Windows 远端空仓 **`wanghoufan/Video2Obsidian-Windows`**（PUBLIC）已建（用户拍板），交付时整目录推上去。恢复开发先读 §一.8 与 §二。
+- **接续 4（2026-09-16，开发暂停）**：用户叫停，开发到此结束。neat-freak收尾（QA§九＋HANDOFF收尾记一笔；清windows/下13个`__pycache__`＋仓根`.DS_Store`）已落盘推main（`5a19258`）。恢复开发先读 §一.8（Stage4挂账）与 §二。
 - PROJECT_PHASE：**DEVELOP**（Phase2 未关闭）
 - PLAN_VERSION：`PRODUCT_PLAN_V1.3`（正文最新；文末「Readiness Score / 本轮真实验证记录」两段仍为 V1.2 旧文本，见 `docs/pm/PRODUCT_PLAN.md` 顶部收尾注记）
 - PLAN_READINESS_SCORE：**未达 90**（planner 自评 89；Research Reviewer 独立 83；用户已知并决定开工）
