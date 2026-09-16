@@ -440,4 +440,14 @@
   1. `docs/review/...WATCHER-CODE-REVIEW.md:74`/`:139` 的 **P3-5 请求未执行**：`docs/pm/STAGE5-PLAN.md:47` 与 `docs/qa/STAGE5-QA-REPORT.md:24/:52/:65` 的 A5「抖动文件仍 WAITING」口径在 `P1-1-FIX` 后已变为「首投 `PROMOTED`」（reviewer 探针 4 实测），至今**无注记**——本轮授权范围只含三份报告，故只记不办，待用户/TM 一句话即可补。
   2. `TASK-MODEL-LOG.jsonl` **缺独立 `P1-1`（首轮 qa）任务行**；`DISPATCH-LOG.jsonl` 已 93 行。
   3. 本轮 tmp 清理后，三份报告引用的 `/tmp/**` 取证路径**已不可复跑**（结论未变，仅取证可复现性下降）。
-  4. 更早批 tmp 残留 136 项 / 0.07 GB 只列未删（见上）。
+   4. 更早批 tmp 残留 136 项 / 0.07 GB 只列未删（见上）。
+
+---
+
+## 收尾记一笔（neat-freak，2026-09-16 WIN Stage4交付轮）
+
+- 范围：只做文档对齐加注（本节＋`docs/qa/WIN-STAGE4-QA-2026-09-16.md` 尾部 §九）＋仓库系统产物清理；**未改任何结论正文、未改业务代码**（`app/`、`src/`、`tests/`、`windows/` 零触碰）、未 commit/push、未碰 secrets，未动旧版封存与 `008林粒粒AI编程/`，未删任何业务/文档文件。
+- 一致项（实测基准＝HEAD `76c05bc`）：① §一.8 四角色链收口描述成立——收口 `587d0ae`（`git log` 在位，提交信息内 `stage4终验65/0、contract601、stage3自测70/0、账本TASK64/DISPATCH113` 与实测一致）、记账 `76c05bc`＝当前 HEAD；② §二 item2「收口commit `587d0ae` 已推 `main`」成立（`origin/main` 同步，工作树干净）；`windows/` 整目录推远端 `Video2Obsidian-Windows`（main首commit＋tag `win-v1-rc`）为另一远端仓动作，本仓本地仅有 tag `v1.0-mac`，以交付记录为准；③ QA §八自测数 65/601/70 本轮实跑复现一致，sha `db59ecfd`（`windows/app/server.py`）、`75437d1c`（`windows/start.ps1`）前缀一致，账本 64/113 行一致。
+- 差异项：① QA F3 所指 `start.ps1` 即 `windows/start.ps1`（`windows/app/` 下无此文件），已在 QA §九收窄登记，结论不受影响；② Windows 远端 tag `win-v1-rc` 无法在本仓 `git tag -l`／`git remote -v`（仅 `Video2Obsidian-Mac`）复核，记为未独立验证项。
+- 清理：删 `windows/` 下 **13 个 `__pycache__`**（`app/`×1＋`src/`×12，Stage4 自测运行产物）＋仓根 **1 个 `.DS_Store`**；复查 `find`（排除 `.git`／`.venv`）输出为空。`.venv/` 未动。未删任何业务/文档文件。
+- 未决：① Windows 远端 `Video2Obsidian-Windows` 的 `win-v1-rc` 是否在位待 TM／用户在可联网侧确认；② Windows 11 真机 15 项（`windows/docs/WINDOWS-HANDOFF.md` §二）零推断，待真机；③ reviewer P3×3＋知晓级 2 条＋reapply 口径顺文案（见 §一.8 挂账）待排期。

@@ -102,3 +102,11 @@
 - reviewer/qa逐条表态：reviewer P2-1（reapply补验）已由qa独立端到端PASS关闭；P3×3（ffmpeg随包/README打包清单、requirements哈希占位、sleep12轮询窗口）同意挂账不阻塞；qa QA-001 reapply链路PASS确认，QA-002/003为环境阻塞（沙箱禁bind＋真机15项未验）如实标注，contract TM补位601 rc0成立，不升不降。
 - 账本：TASK-MODEL-LOG第二道校验BAD=0；DISPATCH-LOG第二道校验BAD=0（runtime按表含opencode放行）。
 - 结论：PASS，放行收口推main；挂账延续qa §六＋reviewer P3×3，真机15项零推断。
+
+---
+
+## 九、收尾注记（neat-freak，2026-09-16；上文正文一字未动）
+
+- 一致项（实测基准＝HEAD `76c05bc`）：① §三自测数 `stage4终验65/0 teeth 4/4`、`contract 601/601`、`stage3自测70/0`——本轮本窗口 `.venv` 实跑复现一致（stage4 65 PASS／stage3 70 PASS）；② §四 F1 `server.py` SHA `db59ecfd…`＝实测 `shasum windows/app/server.py` 前缀一致（`db59ecfd…fa4f`）；F3 `75437d1c…`＝实测 `windows/start.ps1` 前缀一致（`75437d1c…6c2b`，注：文件在 `windows/` 根，非 `windows/app/`）；F2 `3c937a1b…` 为 `/tmp` 备份还原历史值，工作树无残留；③ 账本 `TASK 64 行`／`DISPATCH 113 行`与实测行数一致（收口 `587d0ae` 提交信息内记数一致）；④ 复检节位置 `§八` 起始 `:96`、标题 `:96`，HANDOFF §一.8 引 `:八` 同节，无歧义。
+- 差异项：无实质差异。仅路径表述收窄：F3 所指 `start.ps1` 即 `windows/start.ps1`（`windows/app/` 下无此文件，`windows/app/start.sh` 已删），结论不受影响。
+- 本节只加注，不改结论正文，不碰业务代码。
