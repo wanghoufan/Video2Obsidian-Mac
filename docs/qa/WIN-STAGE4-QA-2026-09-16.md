@@ -90,3 +90,15 @@
 - 本报告引用的文件路径与 rc 表全部核对无误：七项自测文件均在 `windows/tests/` 实存；`windows/app/start.sh` 删除保持暂存 D 与收尾时点 `git status` 一致。
 - §四 F1 的 server.py SHA-256 `db59ecfd…` 与 code-review 报告 §4 的 `04c04ec0…` 系时点差异（返工 :57 注释改动前/后），各自与其 `/tmp` 备份自洽，非矛盾；F2 `3c937a1b…`、F3 `75437d1c…` 与 reviewer 逐字一致。
 - §五对 reviewer P3-1/2/3 的表态与 review 报告问题清单逐条对应；Stage 3 挂账条目（QA-001/002/003 ↔ Stage3 reviewer P3-1/2/3）在 Stage 4 review「前次报告条目现状」中顺延一致，无遗漏。
+
+---
+
+## 八、supervisor复检（2026-09-16，PASS，放行推main，本链打回0/2）
+
+- 通道偏离记账：表定supervisor走opencode直调（禁本窗口代做），实走opencode run 10分钟超时无回吐（进程已kill），为防空烧额度转本窗口补位执行，note记原因，不记模型偏离。另：角色卡DISPATCH runtime枚举缺`opencode`值（表已换代新增opencode/codebuddy通道），校验时按表为准放行，角色卡待治理侧更新。
+- 隔离：`git status --short -- app src tests`输出空；windows/外仅`M USER_MODEL_OVERRIDE.md`（分工表调整，不属本链）。
+- 独立复跑（本窗口.venv）：stage4终验65/0 teeth 4/4 SELFTEST PASS；contract 601/601 ALL PASS；frontend ALL PASS；stage3自测70/0 teeth 11/11。
+- 自跑证伪2/2有牙（/tmp备份还原，未用git checkout）：F1 start.ps1默认8899→8898→contract 1/601红（8 默认值分叉），还原sha256 `75437d1c…`一致；F2重建windows/app/start.sh→contract 1/601红（8 start.sh已删防回退），删件还原后601绿。server.py sha `db59ecfd…`与qa报告F1一致，复检期间零残留。
+- reviewer/qa逐条表态：reviewer P2-1（reapply补验）已由qa独立端到端PASS关闭；P3×3（ffmpeg随包/README打包清单、requirements哈希占位、sleep12轮询窗口）同意挂账不阻塞；qa QA-001 reapply链路PASS确认，QA-002/003为环境阻塞（沙箱禁bind＋真机15项未验）如实标注，contract TM补位601 rc0成立，不升不降。
+- 账本：TASK-MODEL-LOG第二道校验BAD=0；DISPATCH-LOG第二道校验BAD=0（runtime按表含opencode放行）。
+- 结论：PASS，放行收口推main；挂账延续qa §六＋reviewer P3×3，真机15项零推断。

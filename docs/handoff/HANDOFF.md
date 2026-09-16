@@ -6,7 +6,7 @@
 - Captured at（YYYY-MM-DD HH:MM）：**2026-09-15 22:10（TM 收口 + 冻结）**；本阶段 P1 全部收口并推送 `main`，随后**冻结版本**（tag `v1.0-mac`，落点 `5f06fdb`）；下一步＝**Windows 11 迁移**（另建独立仓库，方案已由 planner 产出：`docs/pm/WINDOWS-MIGRATION-PLAN.md`，**只出计划不施工**）
 - **接续（编排者恢复工作，2026-09-15 晚）**：冻结后发现工作树留有**未提交的 P1-9 在制品**（4 文件），已按「续做半成品默认保留」逐块核对后**先 commit＋push 落盘**，再补走角色链。见 §一.4。Windows 迁移顺延到 P1-9 收口之后。
 - **接续 2（编排者恢复工作，2026-09-16）**：实测 git 对账发现 HANDOFF 落后实际进度——WIN Stage 0（`ebabf91`）与 **Stage 1+2（`6e19fb5`，四角色链 PASS 已推 main）** 均已收口；工作树留 **Stage 3 在制品**（asr_backend 适配层＋stage1 改接＋platform_win.run_ffmpeg），已按「续做半成品默认保留」续链收口，见 §一.7。
-- **接续 3（2026-09-16，用户叫停暂停）**：**Stage 3 已收口推 main（`d8f89d7`）**；**Stage 4 链已走完 builder→reviewer（含返工复核）→qa，差 supervisor 复检未收口**（见 §一.8，在制品已 commit 落盘）。Windows 远端空仓 **`wanghoufan/Video2Obsidian-Windows`**（PUBLIC）已建（用户拍板），交付时整目录推上去。恢复开发先读 §一.8 与 §二。
+- **接续 3（2026-09-16，用户叫停暂停）**：**Stage 3 已收口推 main（`d8f89d7`）**；**Stage 4 链已走完 builder→reviewer（含返工复核）→qa→supervisor复检PASS（2026-09-16收口，复检节`docs/qa/WIN-STAGE4-QA-2026-09-16.md:八`）**。Windows 远端空仓 **`wanghoufan/Video2Obsidian-Windows`**（PUBLIC）已建（用户拍板），交付时整目录推上去。恢复开发先读 §一.8 与 §二。
 - PROJECT_PHASE：**DEVELOP**（Phase2 未关闭）
 - PLAN_VERSION：`PRODUCT_PLAN_V1.3`（正文最新；文末「Readiness Score / 本轮真实验证记录」两段仍为 V1.2 旧文本，见 `docs/pm/PRODUCT_PLAN.md` 顶部收尾注记）
 - PLAN_READINESS_SCORE：**未达 90**（planner 自评 89；Research Reviewer 独立 83；用户已知并决定开工）
@@ -120,13 +120,13 @@
 - **supervisor 复检（PASS，放行，0/2）**：四套自测独立复跑 rc0（contract 600 双重证实）；自建夹具 35 断言两遍一致；证伪 2/2 有牙（shasum 一致还原）；三项关闭读码证实；账本逐行 json 坏行 0；红线扫描零命中。复检节在 qa 报告尾部。
 - **挂账（非阻塞）**：P3×3（monotonic 守卫保险带恒真／OOM 后模型无显式释放与 work_dir 不清理／requirements 哈希占位待随模型冻结回填）＋README 面向 Windows 的表述待 Stage 4 统一改写＋**Stage 4 真机清单**（真实 CUDA/CT2 加载链、Defender/UAC、Explorer/Obsidian、PowerShell、干净机复装——不许推断为通过）。
 
-### 8. WIN Stage 4 链状态（**差 supervisor 复检，未收口**；在制品已落盘）
+### 8. WIN Stage 4 链状态（**已收口**，2026-09-16；supervisor复检PASS放行）
 
 - **交付物**：① `windows/tests/selftest_win_stage4.py`（807 行：桩引擎＋全链路真跑——真 watchdog/discover/ffmpeg/分块/Norm/Render/发布；65 断言 0 失败、4/4 反向证伪有牙；端到端/No-Clobber/崩溃恢复幂等 Source=1 Run=1 PUBLISHED=1/reconcile Lost=Duplicate=0/半截源门）② README 中英 Windows 化改写 ③ `windows/docs/WINDOWS-HANDOFF.md`（交付文档：**15 条真机待验清单零推断**＋验收命令＋红线）④ `git rm windows/app/start.sh`（Mac 前史遗留）。
 - **builder（PASS，opencode-go/deepseek-v4.1-flash）** → **code-reviewer 首轮（PASS 0P0/0P1）**：P2×1（reapply 恢复链路建议 QA 补测）＋P3×3（ffmpeg 随包承诺未落地／requirements 哈希占位／sleep(12) 轮询窗口）＋第二实例验收命令问题。报告 `docs/review/WIN-STAGE4-CODE-REVIEW.md`。
 - **builder 返工（PASS）**：验收顺序**对调**（关键语义：单实例锁在 POST /api/start 才获取，`server.py:5365`→`startup.py:172`；先跑第二实例 CLI 会假绿 exit 0）＋start.sh 删除＋自决连带修三处（contract 4 条 start.sh 断言改 5 条防回退 600→601、frontend 改读 start.ps1、`index.html:2395` 文案）。**返工复核（PASS）**：逐 hunk 最小、证伪 3 条有牙、contract 601 rc0。
 - **qa（codex/gpt-5.6-luna，tokens 163,977；任务级 FAIL＝环境阻塞，业务 BUG 0）**：**reapply 恢复链路独立端到端 PASS**（PUBLISH_BLOCKED→`/api/reapply` 出稿 Raw 不变 whisper 0 次；重试被已完成跳过挡回——**行为差异实证，恢复发布走 reapply**）；主路径/No-Clobber/崩溃恢复/第二实例 exit3 与 0 两态全过；证伪 3/3 有牙（SHA-256 一致还原，TM 复核变异全清）；contract 沙箱禁 bind → **TM 补位 601/601 rc0**。报告 `docs/qa/WIN-STAGE4-QA-2026-09-16.md`。
-- **状态**：**supervisor 复检未做**——恢复后第一件事就是补 supervisor → 放行后收口推 main → `windows/` 整目录（排除 `.venv`/`.git`/`data/`/`.codebuddy/`/`__pycache__`，隐私扫描）推 `Video2Obsidian-Windows`。
+- **状态**：**supervisor复检PASS（2026-09-16，打回0/2放行；复检节`docs/qa/WIN-STAGE4-QA-2026-09-16.md:八`；通道偏离：表定opencode直调超时转本窗口补位已记账）**——待收口commit＋push `main` → `windows/` 整目录推远端。
 - **挂账（非阻塞）**：reviewer P3×3（ffmpeg 随包二进制打包阶段补齐／requirements 哈希随模型冻结回填／sleep(12) 测试基建）＋知晓级 2 条（contract「字面量恰一份」断言连注释计数／HANDOFF 示例 data-root 默认路径易漏换）＋qa 提醒 PUBLISH_BLOCKED 恢复走 reapply 而非重试（README/文案可再顺一句）。
 
 ## 二、下一步的任务
@@ -134,7 +134,7 @@
 - **下一步（Next Single Action，按序）**：
   0. **（已完成）P1 全链收口＋冻结 `v1.0-mac`**；P1-9 补链收口（`e38151a`）。
   1. **（已完成）WIN Stage 0/1/2**（`ebabf91`/`6e19fb5`）；**Stage 3**（`d8f89d7`）收口推 main。
-  2. **（当前项·差最后一步）WIN Stage 4**：builder→reviewer（含返工复核）→qa 已全过（业务 0 缺陷，contract TM 补位 601 rc0），**只差 supervisor 复检**（见 §一.8）→ 放行后收口 commit＋push `main` → `windows/` 整目录（排除 `.venv`/`.git`/`data/`/`.codebuddy/`/`__pycache__`，隐私扫描先扫一次）推 **`wanghoufan/Video2Obsidian-Windows`**（空仓已建，用户拍板）→ 首个远端 commit 建议打 tag `win-v1-rc`。
+  2. **（当前项）WIN Stage 4**：四角色链全PASS收口（supervisor复检PASS 0/2放行，见§一.8）→ 收口 commit＋push `main` → `windows/` 整目录（排除 `.venv`/`.git`/`data/`/`.codebuddy/`/`__pycache__`，隐私扫描先扫一次）推 **`wanghoufan/Video2Obsidian-Windows`**（空仓已建，用户拍板）→ 首个远端 commit 建议打 tag `win-v1-rc`。
   3. **Windows 11 真机 15 项**（`windows/docs/WINDOWS-HANDOFF.md` §二）：真实 CUDA/CT2、PowerShell、NTFS 语义、断网、干净机复装等——须真机做完才能宣布 Windows 版可用，零推断。
   4. 收尾：experience-recorder 一次（neat-freak 已于 2026-09-16 本轮完成）。
 - **人要拍什么板（只问大事）**：
@@ -147,7 +147,7 @@
 - **读盘顺序（全体系唯一，别乱）**：AGENTS → `docs/roles/` → 根 `USER_MODEL_OVERRIDE.md`（冲突以表为准）→ 本 HANDOFF → 根 `经验一句话.md` → 任务目标放**最后**。
 - **两阶段治理**：`PLAN / WAITING_HUMAN_APPROVAL / DEVELOP / PLAN_REOPEN_REQUIRED`；只有用户明确说「第二阶段，开发」才进 Phase2。
 - **派工显式**：每派先贴「正在调用 XX｜主用精确ID＋Runtime」，收工贴「XX 回来了 PASS/FAIL＋实走主/备」；HANDOFF 与账本记同一行。
-- **固定通道（真源＝根 `USER_MODEL_OVERRIDE.md`）**：builder=`opencode-go/deepseek-v4.1-flash`（本窗口）；supervisor=`opencode-go/muse-spark-1.3-contributor`（本窗口）；code-reviewer／experience-recorder／neat-freak=`opencode/muse-spark-1.3-contributor-free`（本窗口）；planner／senior-expert=`codex/gpt-5.6-sol`（codex 直调）；qa／product-reviewer=`codex/gpt-5.6-luna`（codex 直调）。主用不可用即停派找人，禁自切备用/降级。
+- **固定通道（真源＝根 `USER_MODEL_OVERRIDE.md`，2026-09-16现网）**：builder=`opencode-go/deepseek-v4.1-flash`（本窗口）；supervisor=`opencode-go/muse-spark-1.3-contributor`（opencode直调，禁本窗口代做；本轮超时转本窗口补位已记账）；code-reviewer／experience-recorder／neat-freak=`opencode/muse-spark-1.3-contributor-free`（本窗口）；planner／senior-expert=`codex/gpt-5.6-sol`（codex直调）；qa=`codex/gpt-5.6-luna`（本窗口）；product-reviewer=`codex/gpt-5.6-terra`（codex直调）。主用不可用即停派找人，禁自切备用/降级。
 - **分类器（本窗口环境，2026-09-16 现网值＝`deepseek-v4.1-flash`）**：auto mode 分类器配置在 settings `subagents.agents.autoModeClassifier.model`；演进史 hy3→glm-5.3-flash（同卡：单轮预算瓶颈）→**deepseek-v4.1-flash（可用）**；长复合命令仍可能被拦 → 任务书落文件传路径（Write/Edit 不走分类器）、连续失败挂定时重试，**不为此打扰用户、不切默认权限**（用户 2026-09-15 明确）。
 - **PUBLISH_BLOCKED 恢复口径（Stage 4 qa 实证）**：恢复被拦发布走**重跑（reapply，whisper 0 次）**；「重试」会被已完成跳过口径挡回（202 排队但不恢复）——用户指引与文档按此口径。
 - **推进纪律**：小问题不问直接推；P0/P1 尽量解、解不了挂账记报告。**额度纪律**：外部模型先小步试、及时收、烧了多少如实报；用户说停立即停。
