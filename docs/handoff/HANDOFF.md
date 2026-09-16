@@ -134,7 +134,7 @@
 - **下一步（Next Single Action，按序）**：
   0. **（已完成）P1 全链收口＋冻结 `v1.0-mac`**；P1-9 补链收口（`e38151a`）。
   1. **（已完成）WIN Stage 0/1/2**（`ebabf91`/`6e19fb5`）；**Stage 3**（`d8f89d7`）收口推 main。
-  2. **（当前项）WIN Stage 4**：四角色链全PASS收口（supervisor复检PASS 0/2放行，见§一.8）→ 收口 commit＋push `main` → `windows/` 整目录（排除 `.venv`/`.git`/`data/`/`.codebuddy/`/`__pycache__`，隐私扫描先扫一次）推 **`wanghoufan/Video2Obsidian-Windows`**（空仓已建，用户拍板）→ 首个远端 commit 建议打 tag `win-v1-rc`。
+  2. **（已完成2026-09-16）WIN Stage 4**：四角色链全PASS收口（supervisor复检PASS 0/2放行，见§一.8）→ 收口commit `587d0ae`已推`main` → `windows/`整目录已推 **`wanghoufan/Video2Obsidian-Windows`**（main首commit＋tag `win-v1-rc`）。
   3. **Windows 11 真机 15 项**（`windows/docs/WINDOWS-HANDOFF.md` §二）：真实 CUDA/CT2、PowerShell、NTFS 语义、断网、干净机复装等——须真机做完才能宣布 Windows 版可用，零推断。
   4. 收尾：experience-recorder 一次（neat-freak 已于 2026-09-16 本轮完成）。
 - **人要拍什么板（只问大事）**：
