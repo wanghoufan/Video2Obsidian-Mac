@@ -2392,8 +2392,8 @@ el("btnStart").onclick=function(){
       var msg=String(x.o.error||("启动失败："+x.code));
       say(msg,"err");
       if(/没就绪/.test(msg)){
-        say(msg+" · 一键启动命令可复制： ./app/start.sh","err");
-        toast("转写环境没就绪，可复制一键启动命令： ./app/start.sh","err");
+        say(msg+" · 一键启动命令可复制： .\\start.ps1","err");
+        toast("转写环境没就绪，可复制一键启动命令： .\\start.ps1","err");
       }
     }
     refresh();

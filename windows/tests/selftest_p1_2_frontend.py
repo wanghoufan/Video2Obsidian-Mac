@@ -1467,7 +1467,7 @@ async function s13(){
 
 def brand_checks():
     """P3-1 品牌断言牙（防改名回退）：只钉用户可见文案；v2o- 键/.v2o class 属技术标识，不在此列；
-    start.sh 一行更严：仅按令牌豁免 V2O_PORT（V2OApp 等子串不再放行）。"""
+    start.ps1 一行更严：仅按令牌豁免 V2O_PORT（V2OApp 等子串不再放行）。"""
     root = os.path.dirname(HTML)
     src = open(HTML, encoding="utf-8").read()
     assert '<title>懒得笔记 · 本地视频自动转文字</title>' in src, "title 品牌回退"
@@ -1475,10 +1475,10 @@ def brand_checks():
     assert 'content:"懒得笔记 · 本机磁带"' in src, "磁带品牌回退"
     # P1-8：`V2O_PORT` 是环境变量技术标识（非用户可见文案），只按 token 边界精确摘除；
     # 不做 V2OApp 之类子串豁免（那是放宽）；V2O_PORT_EXTRA／XV2O_PORT 因边界不符照咬不放。
-    sh = open(os.path.join(root, "start.sh"), encoding="utf-8").read()
+    sh = open(os.path.join(root, "..", "start.ps1"), encoding="utf-8").read()
     sh_left = [l.strip() for l in sh.splitlines()
                if "V2O" in re.sub(r"\bV2O_PORT\b", "", l)]
-    assert not sh_left, "start.sh 可见文案 V2O 残留（仅豁免 V2O_PORT 令牌）: %s" % sh_left
+    assert not sh_left, "start.ps1 可见文案 V2O 残留（仅豁免 V2O_PORT 令牌）: %s" % sh_left
     mb = open(os.path.join(root, "..", "src", "stage12", "menu_bar.py"), encoding="utf-8").read()
     left = [l.strip() for l in mb.splitlines() if "V2O" in l and "V2OApp" not in l]
     assert not left, "menu_bar.py 可见文案 V2O 残留（非 V2OApp 类名）: %s" % left

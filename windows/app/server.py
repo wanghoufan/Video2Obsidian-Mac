@@ -54,7 +54,7 @@ from stage12.status_snapshot import collect  # noqa: E402  (只读复用)
 from stage5.startup import run_startup  # noqa: E402  (后台启动复用)
 
 HOST = "127.0.0.1"
-# P1-8：端口真源（唯一）。默认 8899；可用环境变量 V2O_PORT 覆盖（start.sh 透传）。
+# P1-8：端口真源（唯一）。默认 8899；可用环境变量 V2O_PORT 覆盖（start.ps1 透传）。
 PORT = 8899
 _env_port = (os.environ.get("V2O_PORT") or "").strip()
 if _env_port:

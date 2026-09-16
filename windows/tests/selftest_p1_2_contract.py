@@ -959,20 +959,23 @@ def part8_http_contract(server):
             os.environ["V2O_PORT"] = _saved_port_env
     check("8 未设 V2O_PORT 时默认端口＝8899（真源，防回退）",
           getattr(fresh, "PORT", None) == 8899, getattr(fresh, "PORT", None))
-    # P1-8 P2-1：start.sh 的默认值与 URL 必须与 server.py 真源机械咬合（改一处忘一处即挂）
-    sh_src = open(os.path.join(ROOT, "app", "start.sh"), encoding="utf-8").read()
-    sh_defaults = re.findall(r"V2O_PORT:-(\d+)", sh_src)
-    check("8 start.sh 端口收敛成 V2O_PORT:-<默认> 单变量（恰好一处）",
-          len(sh_defaults) == 1, sh_defaults)
-    check("8 start.sh 默认值＝server.py 默认端口（真源分叉即挂）",
-          sh_defaults == [str(getattr(fresh, "PORT", None))], sh_defaults)
-    sh_bare = sorted(set(re.findall(r"(?<!\d)(\d{4,5})(?!\d)", sh_src)))
-    check("8 start.sh 除该默认值外无裸端口数字（防再写死一份）",
-          sh_bare == sh_defaults, sh_bare)
-    sh_code = [l for l in sh_src.splitlines() if l.strip() and not l.strip().startswith("#")]
-    check("8 start.sh URL 全走 $PORT（非注释行无 127.0.0.1:<数字> 硬编码）",
-          all(re.search(r"127\.0\.0\.1:\d", l) is None for l in sh_code),
-          [l for l in sh_code if re.search(r"127\.0\.0\.1:\d", l)])
+    # P1-8 P2-1：start.ps1 的默认值与 URL 必须与 server.py 真源机械咬合（改一处忘一处即挂）。
+    # app/start.sh 已删（Mac 前史遗留）：Windows 端口透传单点＝start.ps1，此处一并钉死防回退。
+    check("8 start.sh 已删（Mac 前史遗留，防整目录拷出带走不可用脚本）",
+          not os.path.exists(os.path.join(ROOT, "app", "start.sh")))
+    ps1_src = open(os.path.join(ROOT, "start.ps1"), encoding="utf-8").read()
+    ps1_defaults = re.findall(r'else \{ "(\d+)" \}', ps1_src)
+    check("8 start.ps1 端口默认值收敛成 else 兜底（恰好一处）",
+          len(ps1_defaults) == 1, ps1_defaults)
+    check("8 start.ps1 默认值＝server.py 默认端口（真源分叉即挂）",
+          ps1_defaults == [str(getattr(fresh, "PORT", None))], ps1_defaults)
+    check("8 start.ps1 默认端口字面量全文恰好一份（防再写死第二份）",
+          ps1_src.count(ps1_defaults[0]) == 1, ps1_src.count(ps1_defaults[0]))
+    ps1_code = [l for l in ps1_src.splitlines() if l.strip() and not l.strip().startswith("#")]
+    check("8 start.ps1 URL 全走 $Port 变量（非注释行无 127.0.0.1:<数字> 硬编码）",
+          "127.0.0.1:$Port" in ps1_src
+          and all(re.search(r"127\.0\.0\.1:\d", l) is None for l in ps1_code),
+          [l for l in ps1_code if re.search(r"127\.0\.0\.1:\d", l)])
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = "http://127.0.0.1:%d" % port
 
